@@ -7,10 +7,25 @@ class FSM:
     where n is the amount of characters inputed.
     """
 
-    def init(self, state, signal):
+    def __init__(self, signal):
         self.state = 0
         self.signal = signal
         self.n = 0
+
+    def add_rule(self):
+        pass
+
+    def get_next_signal(self):
+        pass
+
+    def run_rules(self):
+        pass
+
+    def apply_rule(self):
+        pass
+
+    def main_loop(self):
+        pass
 
     def signal_to_state(self, signal):
         if self.state == 0 and self.signal == 8:
