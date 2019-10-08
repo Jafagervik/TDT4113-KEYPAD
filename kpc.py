@@ -6,7 +6,7 @@ class KPC:
     """
 
     def __init__(self):
-        pass
+        self.i = 0
 
     def init_passcode_entry(self):
         pass
