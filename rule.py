@@ -10,3 +10,6 @@ class Rule:
         self.state2 = state2
         self.signal = signal
         self.action = action
+
+    def action(self, agent, symbol):
+        pass
