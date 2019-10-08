@@ -9,14 +9,14 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
-git pull 
-git push
-git commit -m <message>
-git checkout -b <branchname>
-git push --set-upstream origin <branchname> 
-git add <file>
-git status 
-git checkout <branchname>  """switch branch"""
+git pull """Fetch latest changes on branch"""
+git push """Upload your changes to remote branch
+git commit -m <message> """Commit changes for several files and add a message on what you changed/added"""
+git checkout -b <branchname> """Create new branch locally"""
+git push --set-upstream origin <branchname>  """Set up branch remotely for others to checkout"""
+git add <file> """Add files you want to commit and push"""
+git status """Status on which files has been added/removed/modified"""
+git checkout <branchname>  """switch branch""" 
 git branch -a              """see all branches"""
 
 **Bold** and _Italic_ and `Code` text
