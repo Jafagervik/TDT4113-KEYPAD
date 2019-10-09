@@ -48,10 +48,36 @@ class Keypad:
                     location = str(i) + str(j)
         return location
         """
+        """
         KEY_PRESS = 0
         while True:
             KEY_PRESS = 0
             for out in self.key_rows:
+                GPIO.output(out,GPIO.HIGH)
+            while KEY_PRESS == 0:
+                for inp in inputs:
+                    if GPIO.input(inp) == GPIO.HIGH:
+                        KEY_PRESS = 1
+                        break
+            for out_id in self.key_rows:
+                for out_id2 in self.key_rows:
+                    GPIO.output(out_id2, 0)
+                GPIO.output(out_id, 1)
+                if GPIO.input()
+        """
+
+        while True:
+            for j in range(3):
+                GPIO.output(self.key_column[j],0)
+                for i in range(4):
+                    if GPIO.input(self.key_rows[i]) == 0:
+                        time.sleep(0.01)
+                        while GPIO.input(self.key_rows[i]) == 0:
+                            pass
+                        location = str(i) + str(j)
+                        return location
+
+                GPIO.output(self.key_column[j], 1)
 
 
 
