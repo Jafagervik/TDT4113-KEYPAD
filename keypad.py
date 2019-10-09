@@ -10,17 +10,17 @@ class Keypad:
         self.key_rows = [18, 23, 24, 25]
         self.key_column = [17, 27, 22]
         self.keypad_dict = {
-            "0,0": 1,
-            "0,1": 2,
-            "0,2": 3,
-            "1,0": 4,
-            "1,1": 5,
-            "1,2": 6,
-            "2,0": 7,
-            "2,1": 8,
-            "2,2": 9,
+            "0,0": "1",
+            "0,1": "2",
+            "0,2": "3",
+            "1,0": "4",
+            "1,1": "5",
+            "1,2": "6",
+            "2,0": "7",
+            "2,1": "8",
+            "2,2": "9",
             "3,0": "*",
-            "3,1": 0,
+            "3,1": "0",
             "3,2": "#"
 
         }
@@ -74,8 +74,8 @@ class Keypad:
                         time.sleep(0.01)
                         while GPIO.input(self.key_rows[i]) == 0:
                             pass
-                        location = str(i) + str(j)
-                        return location
+                        location = str(i) + "," + str(j)
+                        return self.keypad_dict[location]
 
                 GPIO.output(self.key_column[j], 1)
 
