@@ -14,6 +14,9 @@ class FSM:
 
     def __init__(self):
         self.agent = KPC() # Pointer to the KPC object
+        self.keypad = Keypad()
+        self.ledboard = Ledboard()
+
         """self.states = [
             "S-Init",
             "S-Read",
@@ -76,8 +79,7 @@ class FSM:
 
 
     def main_loop(self):
-        keypad = Keypad()
-        ledboard = Ledboard()
+
 
         while self.state < 7:
             symbol = self.get_next_signal()
@@ -89,17 +91,20 @@ class FSM:
 
         #Shutdowns
         self.agent.exit_action()
-        #keypad.shutdown()
-        ledboard.shutting_down()
+        #self.keypad.shutdown()
+        self.ledboard.shutting_down()
+
 
 def signal_is_digit(signal):
     return 48 <= ord(signal) <= 57
 
+
 def all_symbols(signal):
     return 0 <= ord(signal) <= 255
 
+
 def not_valid(signal):
-    return
+    pass
 
 
 ####                      MÅ ENDRE FSM STATE I KPC NÅR EN FUNKSJON KALLES!!!!!!!!
