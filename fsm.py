@@ -31,7 +31,7 @@ class FSM:
 
         #                       READ
         self.add_rule(Rule(2, 2, "signal_is_digit", self.agent.append_next_password_digit()))
-        self.add_rule(Rule(2, 3, "*", self.agent.reset_password_accumulator()))
+        self.add_rule(Rule(2, 3, "*", self.agent.verify_password()))
         self.add_rule(Rule(2, 1, "@", self.agent.reset_agent()))
 
         #                       VERIFY
@@ -80,7 +80,7 @@ class FSM:
         ledboard = Ledboard()
 
         while self.state < 7:
-            symbol = self.agent.get_next_signal()
+            symbol = self.get_next_signal()
             for rule in self.rules:
                 if rule.state1 is self.state and rule.symbol is symbol:
                     self.state = rule.state2
