@@ -7,10 +7,8 @@ class FSM:
     where n is the amount of characters inputed.
     """
 
-    def __init__(self, signal):
-        self.state = 0
-        self.signal = signal
-        self.n = 0
+    def __init__(self, state1, state2, signal, action):
+        pass
 
     def add_rule(self):
         pass
