@@ -98,5 +98,8 @@ def signal_is_digit(signal):
 def all_symbols(signal):
     return 0 <= ord(signal) <= 255
 
+def not_valid(signal):
+    return
+
 
 ####                      MÅ ENDRE FSM STATE I KPC NÅR EN FUNKSJON KALLES!!!!!!!!
