@@ -7,6 +7,7 @@ class KPC:
 
     def __init__(self):
         self.i = 0
+        self.password = ""
 
     def init_passcode_entry(self):
         pass
@@ -34,26 +35,36 @@ class KPC:
         pass
 
     # Rule Methods For FSM
+    def do_action(self, rule):
+        rule.action(self, rule.symbol)
+
     def reset_password_accumulator(self):
+        self.password = "" #eller skal selve tekstfilen tømmes????
+
+    def append_next_password_digit(self, symbol):
+        self.password += symbol
+
+    def reset_agent(self, symbol):
         pass
 
-    def append_next_password_digit(self):
+    def verify_password(self, symbol):
         pass
 
-    def reset_agent(self):
-        pass
+    def cache_first_new_password(self, symbol):
+        try:
+            with open('password.txt', 'w') as f:
+                f.write(self.password)
+        except FileNotFoundError:
+            print("Could not open file!")
 
-    def verify_password(self):
-        pass
-
-    def cache_first_new_password(self):
-        pass
-
-    def compare_new_password_digit(self, password):
-        with open('password.txt', "r") as f:
-            pwd = f.read()
-            for line in pwd:
-                for char in range(len(line)):
-                    if line[char] != password[char]:
-                        return False
-            return True
+    def compare_new_passwords(self, symbol):
+        try:
+            with open('password.txt', 'r') as f:
+                pwd = f.read()
+                for line in pwd:
+                    for char in range(len(line)):
+                        if line[char] != symbol[char]:
+                            return False
+                return True
+        except FileNotFoundError:
+            print("Could not open file!")
