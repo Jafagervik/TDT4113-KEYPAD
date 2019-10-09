@@ -1,3 +1,4 @@
+from kpc import KPC
 import RPi.GPIO as GPIO
 import time
 
@@ -8,7 +9,6 @@ class Ledboard:
     """
 
     def __init__(self):
-        self.pins = [18, 23, 24]
 
         self.pin_led_states = [
             [1, 0, -1],  # A
@@ -19,11 +19,15 @@ class Ledboard:
             [0, -1, 1]   # F
         ]
 
+        self.pins = self.get_pin_id()
         self.setup()
 
     @staticmethod
     def setup():
         GPIO.setmode(GPIO.BCM)
+
+    def get_pin_id(self):
+        return KPC().pin_ids()
 
     def set_pin(self, pin_index, pin_state):
         if pin_state == -1:
@@ -49,13 +53,7 @@ class Ledboard:
         start = time.time()
         now = start + k**2         # sets now high enough to let the loop start
         while now - start >= k:
-            for i in range(6):
-                self.light_led(i)
-            time.sleep(0.2)
-
-            for i in range(5, -1):
-                self.light_led(i)  # should possibly use turn_off_light
-            time.sleep(0.2)
+            self.twinkle_all_leds(0.2)
             now = time.time()
 
     def twinkle_all_leds(self, k):
