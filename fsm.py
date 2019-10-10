@@ -28,65 +28,73 @@ class FSM:
         self.state = 1 # Initialize state of the FSM
         #self.final_state = self.states[len(self.states)-1]
         self.rules = []
+        self.curr_rules = []
 
+    def setup(self, signal):
+        """
+        Sets up all of the rules for the
+        :return: void
+        """
         #                       INIT
-        self.add_rule(Rule(1, 2, "all_symbols", self.agent.reset_password_accumulator()))
+        self.add_rule(Rule(1, 2, all_symbols(signal), self.agent.reset_password_accumulator()))
 
         #                       READ
-        self.add_rule(Rule(2, 2, "signal_is_digit", self.agent.append_next_password_digit()))
-        self.add_rule(Rule(2, 3, "*", self.agent.verify_password()))
-        self.add_rule(Rule(2, 1, "@", self.agent.reset_agent()))
+        self.add_rule(Rule(2, 2, signal_is_digit(signal), self.agent.append_next_password_digit()))
+        self.add_rule(Rule(2, 3, asterisk(signal), self.agent.verify_login()))
+        self.add_rule(Rule(2, 1, True, self.agent.reset_agent()))
 
         #                       VERIFY
-        self.add_rule(Rule(3, 4, "Y", self.agent.verify_password())) #verify_login()?
-        self.add_rule(Rule(3, 1, "@", self.agent.reset_agent()))
+        self.add_rule(Rule(3, 4, self.override_signal_y(), self.agent.verify_login()))  # verify_login()?
+        self.add_rule(Rule(3, 1, True, self.agent.reset_agent()))
 
         #                       ACTIVE
-        self.add_rule(Rule(4, 5, "*", self.agent.reset_password_accumulator()))
+        self.add_rule(Rule(4, 5, asterisk(signal), self.agent.reset_password_accumulator()))
+        self.add_rule(Rule(4, 4, not asterisk(signal), self.agent.reset_agent()))
 
         #                       READ-2
-        self.add_rule(Rule(5, 5, "is_digit(s)", self.agent.append_new_password_digit()))
-        self.add_rule(Rule(5, 6, "*", self.agent.cache_first_new_password()))
-        self.add_rule(Rule(5, 4, "@", self.agent.reset_agent()))
+        self.add_rule(Rule(5, 5, signal_is_digit(signal), self.agent.append_new_password_digit()))
+        self.add_rule(Rule(5, 6, asterisk(signal), self.agent.cache_first_new_password()))
+        self.add_rule(Rule(5, 4, True, self.agent.reset_agent()))
 
         #                       READ-3
-        self.add_rule(Rule(6, 6, "is_digit()", self.agent.append_new_password_digit()))
-        self.add_rule(Rule(6, 4, "*", self.agent.compare_new_passwords()))
-        self.add_rule(Rule(6, 4, "@", self.agent.reset_agent()))
+        self.add_rule(Rule(6, 6, signal_is_digit(signal), self.agent.append_new_password_digit()))
+        self.add_rule(Rule(6, 4, asterisk(signal), self.agent.compare_new_passwords()))
+        self.add_rule(Rule(6, 4, True, self.agent.reset_agent()))
 
     def add_rule(self, rule):
         self.rules.append(rule)
 
+    def override_signal_y(self):
+        return True if self.agent.override_signal == "Y" else False
+
     def get_next_signal(self):
         self.agent.get_next_signal()
+
+    def state_handler(self, state):
+
 
     def run_rules(self):
         # while rule in self.rules is not fired:
         # do someting
-        i = 0
-        while not self.fire_rule(self.rules[i]):
-            self.apply_rule()
-            i += 1
+        for rule in self.rules:
+            if self.apply_rule(rule.state1, rule.symbol):
+                self.fire_rule(rule)
+                return rule.state2
 
-
-    def apply_rule(self):
+    def apply_rule(self, curr_state, condition):
         # if condition is met THEN apply rule
-        pass
+        if curr_state is self.state and condition:
+            return True
+        return False
 
     def fire_rule(self, rule):
         rule.action(2)
-        self.state = rule.state2
-
 
     def main_loop(self):
 
-
         while self.state < 7:
             symbol = self.get_next_signal()
-            for rule in self.rules:
-                if rule.state1 is self.state and rule.symbol is symbol:
-                    self.state = rule.state2
-                    #agent.do_action(rule.action, symbol)
+            self.state = self.run_rules()
             #Kanskje noe skal her
 
         #Shutdowns
@@ -103,8 +111,7 @@ def all_symbols(signal):
     return 0 <= ord(signal) <= 255
 
 
-def not_valid(signal):
-    pass
-
+def asterisk(signal):
+    return 42 == ord(signal)
 
 ####                      MÅ ENDRE FSM STATE I KPC NÅR EN FUNKSJON KALLES!!!!!!!!
