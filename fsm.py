@@ -71,7 +71,7 @@ class FSM:
         self.agent.get_next_signal()
 
     def state_handler(self, state):
-
+        pass
 
     def run_rules(self):
         # while rule in self.rules is not fired:
@@ -88,18 +88,16 @@ class FSM:
         return False
 
     def fire_rule(self, rule):
-        rule.action(2)
+        self.state = rule.state2
+        rule.action()
 
     def main_loop(self):
-
         while self.state < 7:
             symbol = self.get_next_signal()
             self.state = self.run_rules()
             #Kanskje noe skal her
 
         #Shutdowns
-        self.agent.exit_action()
-        #self.keypad.shutdown()
         self.ledboard.shutting_down()
 
 
@@ -114,4 +112,3 @@ def all_symbols(signal):
 def asterisk(signal):
     return 42 == ord(signal)
 
-####                      MÅ ENDRE FSM STATE I KPC NÅR EN FUNKSJON KALLES!!!!!!!!
