@@ -15,7 +15,6 @@ class FSM:
     def __init__(self):
         self.agent = KPC() # Pointer to the KPC object
         self.keypad = Keypad()
-        self.ledboard = Ledboard()
 
         self.state = 1 # Initialize state of the FSM
         self.final_state = 7 #not a state, if we end up here we're outside the state machine
@@ -89,7 +88,7 @@ class FSM:
             #Kanskje noe skal her
 
         #Shutdowns
-        self.ledboard.shutting_down()
+        self.agent.exit_action()
 
 # Methods to help us determine which method should be called
 def signal_is_digit(signal):
