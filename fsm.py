@@ -17,16 +17,8 @@ class FSM:
         self.keypad = Keypad()
         self.ledboard = Ledboard()
 
-        """self.states = [
-            "S-Init",
-            "S-Read",
-            "S-Verify",
-            "S-Active",
-            "S-Read2",
-            "S-Read3"
-        ]"""
         self.state = 1 # Initialize state of the FSM
-        #self.final_state = self.states[len(self.states)-1]
+        self.final_state = 7 #not a state, if we end up here we're outside the state machine
         self.rules = []
         self.curr_rules = []
 
@@ -88,11 +80,10 @@ class FSM:
         return False
 
     def fire_rule(self, rule):
-        self.state = rule.state2
         rule.action()
 
     def main_loop(self):
-        while self.state < 7:
+        while self.state < self.final_state:
             symbol = self.get_next_signal()
             self.state = self.run_rules()
             #Kanskje noe skal her
@@ -100,7 +91,7 @@ class FSM:
         #Shutdowns
         self.ledboard.shutting_down()
 
-
+# Methods to help us determine which method should be called
 def signal_is_digit(signal):
     return 48 <= ord(signal) <= 57
 
