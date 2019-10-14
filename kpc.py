@@ -1,7 +1,8 @@
 import os
-import fsm
-import keypad
-import ledboard
+from fsm import FSM
+from keypad import Keypad
+from ledboard import Ledboard
+
 
 class KPC:
     """
@@ -21,8 +22,6 @@ class KPC:
         #slots for holding LED id(lid)& Ldur, both entered via keypad
         self.led_id = None
         self.led_dur = None
-
-
 
     def init_passcode_entry(self):
         """Clear the passcode-buffer and initiate a ”power up” lighting sequence
@@ -50,15 +49,14 @@ class KPC:
             self.override_signal = "N"
             self.twinkle_leds()
 
-
     def validate_password_change(self):
         """Check that the new password is legal. If so, write the new password in the password file.
         A legal password should be at least 4 digits long and should
         contain no symbols other than the digits 0-9. As in verify login, this should use the LED
         Board to signal success or failure in changing the password.2"""
 
-        if self.verify_password(symbol):
-            self.cache_first_new_password(symbol)
+        if self.verify_password(self.cump):
+            self.cache_first_new_password()
             self.override_signal = "Y"
             self.flash_leds()
         else:
@@ -100,9 +98,9 @@ class KPC:
         if len(symbol) > 3:
             for i in symbol:
                 if not str.isdigit(i):
-                    return false
-            return true
-        return false
+                    return False
+            return True
+        return False
 
     def cache_first_new_password(self):
         try:
