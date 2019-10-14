@@ -1,7 +1,9 @@
+"""hei"""
+
 import os
-from fsm import FSM
-from keypad import Keypad
-from ledboard import Ledboard
+import fsm
+import keypad
+import ledboard
 
 
 class KPC:
@@ -11,15 +13,15 @@ class KPC:
 
     def __init__(self, fsm):
 
-        self.fsm = fsm #pointer to fsm
+        self.fsm = fsm  # pointer to fsm
         self.i = 0
-        self.keypad = fsm.keypad #pointer to keypad
-        self.ledboard = fsm.ledboard #pointer to ledboard
+        self.keypad = fsm.keypad  # pointer to keypad
+        self.ledboard = fsm.ledboard  # pointer to ledboard
         self.cp = self.load_pass()
-        self.cump = "" #list of strings, password-buffer and entered numbers
-        self.pathname_complete = os.getcwd() + r"\password.txt" #path to password text
-        self.override_signal = None #override-signal
-        #slots for holding LED id(lid)& Ldur, both entered via keypad
+        self.cump = ""  # list of strings, password-buffer and entered numbers
+        self.pathname_complete = os.getcwd() + r"\password.txt"  # path to password text
+        self.override_signal = None  # override-signal
+        # slots for holding LED id(lid)& Ldur, both entered via keypad
         self.led_id = None
         self.led_dur = None
 
@@ -29,19 +31,27 @@ class KPC:
         self.cump = ""
         self.ledboard.powering_up()
 
+    """
     def get_next_signal(self):
-        """ Return the override-signal, if it is non-blank; otherwise query the keypad
-        for the next pressed key."""
+        Return the override-signal, if it is non-blank; otherwise query the keypad
+        for the next pressed key.
         if self.override_signal:
             return self.override_signal
         return self.keypad.get_next_signal()
+    """
+
+    def get_next_signal(self):
+        """ Return the override-signal, if it is non-blank; otherwise query the keypad
+        for the next pressed key."""
+        if not self.override_signal:
+            self.cump += self.keypad.get_next_signal()
 
     def verify_login(self):
         """Check that the password just entered via the keypad matches that in the password file.
         Store the result (Y or N) in the override-signal. Also, this should call the LED
         Board to initiate the appropriate lighting pattern for login success or failure"""
-        #f = open(k.pathname_complete, "r")
-        #corr_pass = f.read()
+        # f = open(k.pathname_complete, "r")
+        # corr_pass = f.read()
         if self.compare_new_passwords(self.cump):
             self.override_signal = "Y"
             self.flash_leds()
@@ -83,18 +93,25 @@ class KPC:
 
     # Rule Methods For FSM
     def do_action(self, rule):
+        """hei"""
         rule.action(self, rule.symbol)
 
     def reset_password_accumulator(self):
-        self.cump = "" #eller skal selve tekstfilen tømmes????
+        """hei"""
+        self.cump = ""  # eller skal selve tekstfilen tømmes????
 
     def append_next_password_digit(self, symbol):
+        """hei"""
         self.cump += symbol
 
+    """
     def reset_agent(self, symbol):
+
         pass
+    """
 
     def verify_password(self, symbol):
+        """hei"""
         if len(symbol) > 3:
             for i in symbol:
                 if not str.isdigit(i):
@@ -103,13 +120,15 @@ class KPC:
         return False
 
     def cache_first_new_password(self):
+        """hei"""
         try:
             with open(self.pathname_complete, 'w') as f:
                 f.write(self.cump)
         except FileNotFoundError:
             print("Could not open file!")
 
-    def load_pass(self, symbol):
+    def load_pass(self):
+        """hei"""
         try:
             with open(self.pathname_complete, 'r') as f:
                 return f.read()
@@ -117,6 +136,7 @@ class KPC:
             print("Could not open file!")
 
     def compare_new_passwords(self, symbol):
+        """hei"""
 
         for line in self.cp:
             for char in range(len(line)):
