@@ -145,7 +145,6 @@ class KPC:
         return True
 
 
-k = KPC()
-
-f = open(k.pathname_complete, "r")
-print(f.read())
+#k = KPC()
+#f = open(k.pathname_complete, "r")
+#print(f.read())

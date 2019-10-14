@@ -92,11 +92,14 @@ class Keypad:
                 return location
             time.sleep(10)
 
+    def start_func(self):
+        print("TEST")
+
 
 
 if __name__ == '__main__':
-    # startup function
-    pass
+    self.start_func()
+
 
 """
 KEY_PRESS=0
